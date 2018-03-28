@@ -5,14 +5,19 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Cors;
+
 using System.Security.Claims;
 using ToGoAPI.DAL;
 using ToGoAPI.Models;
 using System.Configuration;
+using System.Web.Http.Cors;
+
 
 namespace ToGoAPI.Controllers
 {
     [Authorize]
+    [EnableCors(origins: "https://localhost:44326", headers: "*", methods: "*")]
     public class ToGoListController : ApiController
     {
         private ToGoListServiceContext db = new ToGoListServiceContext();
