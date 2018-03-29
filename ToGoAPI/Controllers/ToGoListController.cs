@@ -56,7 +56,7 @@ namespace ToGoAPI.Controllers
             string owner = ClaimsPrincipal.Current.FindFirst(ClaimTypes.Name).Value;
             ToGo.Owner = owner;
             _inMemList.Add(ToGo);
-            //_inMemList.SaveChanges();
+            
         }
 
         public void Put(ToGo ToGo)
@@ -66,7 +66,7 @@ namespace ToGoAPI.Controllers
             if (ToGo != null)
             {
                 xToGo.Description = ToGo.Description;
-               // _inMemList.SaveChanges();
+               
             }
         }
 
@@ -79,7 +79,7 @@ namespace ToGoAPI.Controllers
             if (ToGo != null)
             {
                 _inMemList.Remove(ToGo);
-               // _inMemList.SaveChanges();
+               
             }
         }
     }

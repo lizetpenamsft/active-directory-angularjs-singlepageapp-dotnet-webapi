@@ -9,6 +9,9 @@ using ToGoAPI.Models;
 
 namespace ToGoAPI.DAL
 {
+    /// <summary>
+    /// Not in use in the demo
+    /// </summary>
     public class ToGoListServiceContext : DbContext
     {
         public ToGoListServiceContext()
