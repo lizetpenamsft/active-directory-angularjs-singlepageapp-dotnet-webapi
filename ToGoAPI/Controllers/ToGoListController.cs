@@ -20,53 +20,66 @@ namespace ToGoAPI.Controllers
     [EnableCors(origins: "https://localhost:44326", headers: "*", methods: "*")]
     public class ToGoListController : ApiController
     {
-        private ToGoListServiceContext db = new ToGoListServiceContext();
+        
+        private static List<ToGo> _inMemList;
 
+        private ToGoListController()
+        {
+            if (_inMemList == null)
+            {
+                _inMemList = new List<ToGo>();
+            }
+        }
         // GET: api/ToGoList
         public IEnumerable<ToGo> Get()
         {
-            string owner = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
-            IEnumerable<ToGo> currentUserToGos = db.ToGoes.Where(a => a.Owner == owner);
+            // string owner = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
+            string owner = ClaimsPrincipal.Current.FindFirst(ClaimTypes.Name).Value;
+            
+            IEnumerable<ToGo> currentUserToGos = _inMemList.Where(a => a.Owner == owner);
             return currentUserToGos;
         }
 
         // GET: api/ToGoList/5
         public ToGo Get(int id)
         {
-            string owner = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
-            ToGo toGo = db.ToGoes.First(a => a.Owner == owner && a.ID == id);
+            //string owner = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
+            string owner = ClaimsPrincipal.Current.FindFirst(ClaimTypes.Name).Value;
+            ToGo toGo = _inMemList.First(a => a.Owner == owner && a.ID == id);
             return toGo;
         }
 
         // POST: api/ToGoList
         public void Post(ToGo ToGo)
         {
-            string owner = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
+            //string owner = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
+            string owner = ClaimsPrincipal.Current.FindFirst(ClaimTypes.Name).Value;
             ToGo.Owner = owner;
-            db.ToGoes.Add(ToGo);
-            db.SaveChanges();
+            _inMemList.Add(ToGo);
+            //_inMemList.SaveChanges();
         }
 
         public void Put(ToGo ToGo)
         {
             string owner = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
-            ToGo xToGo = db.ToGoes.First(a => a.Owner == owner && a.ID == ToGo.ID);
+            ToGo xToGo = _inMemList.First(a => a.Owner == owner && a.ID == ToGo.ID);
             if (ToGo != null)
             {
                 xToGo.Description = ToGo.Description;
-                db.SaveChanges();
+               // _inMemList.SaveChanges();
             }
         }
 
         // DELETE: api/ToGoList/5
         public void Delete(int id)
         {
-            string owner = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
-            ToGo ToGo = db.ToGoes.First(a => a.Owner == owner && a.ID == id);
+            //string owner = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
+            string owner = ClaimsPrincipal.Current.FindFirst(ClaimTypes.Name).Value;
+            ToGo ToGo = _inMemList.First(a => a.Owner == owner && a.ID == id);
             if (ToGo != null)
             {
-                db.ToGoes.Remove(ToGo);
-                db.SaveChanges();
+                _inMemList.Remove(ToGo);
+               // _inMemList.SaveChanges();
             }
         }
     }
